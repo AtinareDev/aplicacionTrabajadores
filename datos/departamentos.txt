@@ -1,0 +1,3 @@
+ventas, 1000
+logistica, 1500
+marketing, 2000

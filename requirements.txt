@@ -1,0 +1,2 @@
+# Añade aquí las dependencias necesarias, por ejemplo:
+# flask==2.3.2
