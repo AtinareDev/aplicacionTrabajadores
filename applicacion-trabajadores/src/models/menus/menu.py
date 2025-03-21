@@ -1,13 +1,12 @@
 class Menu:
     def __init__(self):
         self.options = {
-            1: "Opción 1: Mostrar trabajadores",
-            2: "Opción 2: Mostrar departamentos",
-            3: "Opción 3: Agregar trabajador",
-            4: "Opción 4: Agregar departamento",
+            1: "Opción 1: Agregar departamento",
+            2: "Opción 2: Agregar trabajador",
+            3: "Opción 3: Mostrar departamentos",
+            4: "Opción 4: Mostrar trabajadores",
             5: "Opción 5: Calcular sueldo",
-            6: "Opción 6: Mostrar información",
-            7: "Opción 7: Salir"
+            6: "Opción 6: Salir"
         }
 
     def display(self):

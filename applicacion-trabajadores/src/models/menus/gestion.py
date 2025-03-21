@@ -3,6 +3,7 @@ from ..trabajador import Trabajador
 from ..departamento import Departamento
 from utils.helpers import limpiar
 
+
 class Gestion:
     def __init__(self):
         self.menu = Menu()
@@ -11,25 +12,24 @@ class Gestion:
         while True:
             self.menu.display()
             choice = self.menu.get_choice()
+            limpiar()
             if choice == 1:
-                print(f"Usted ha seleccionado la opción {choice}.")
-                self.mostrar_trabajadores()
-            elif choice == 2:
-                print(f"Usted ha seleccionado la opción {choice}.")
-                self.mostrar_departamentos()
-            elif choice == 3:
-                print(f"Usted ha seleccionado la opción {choice}.")
-                self.agregar_trabajador()
-            elif choice == 4:
+                
                 print(f"Usted ha seleccionado la opción {choice}.")
                 self.agregar_departamento()
+            elif choice == 2:
+                print(f"Usted ha seleccionado la opción {choice}.")
+                self.agregar_trabajador()
+            elif choice == 3:
+                print(f"Usted ha seleccionado la opción {choice}.")
+                self.mostrar_departamentos()
+            elif choice == 4:
+                print(f"Usted ha seleccionado la opción {choice}.")
+                self.mostrar_trabajadores()
             elif choice == 5:
                 print(f"Usted ha seleccionado la opción {choice}.")
                 self.calcular_sueldo()
             elif choice == 6:
-                print(f"Usted ha seleccionado la opción {choice}.")
-                self.mostrar_informacion()
-            elif choice == 7:
                 print(f"Usted ha seleccionado la opción {choice}.")
                 print("Saliendo del programa...")
                 break
@@ -65,28 +65,36 @@ class Gestion:
                 if dept.strip().lower() == departamento.lower():  # Comparar sin distinguir mayúsculas
                     sueldo = sueldo_departamento.strip()
                     break
-        
+
         if sueldo:
             # Si encontramos el sueldo, lo asignamos al trabajador
             trabajador = Trabajador(nombre, apellido, edad, departamento)
             # Escribir el trabajador en trabajadores.txt
             with open(r"datos\trabajadores.txt", "a", encoding="utf-8") as archivo_trabajadores:
-                archivo_trabajadores.write(f"{trabajador} - Sueldo: {sueldo}\n")
-            print(f"Trabajador {nombre} {apellido} agregado al departamento {departamento} con un sueldo de {sueldo}.")
+                archivo_trabajadores.write(
+                    f"{trabajador} - Sueldo: {sueldo}\n")
+            limpiar()
+            print(
+                f"Trabajador {nombre} {apellido} agregado al departamento {departamento} con un sueldo de {sueldo}.")
         else:
             limpiar()
-            print(f"No se encontró el departamento {departamento}. Por favor, verifica el nombre del departamento.")
-
-
+            print(
+                f"No se encontró el departamento {departamento}. Por favor, verifica el nombre del departamento.")
 
     def agregar_departamento(self):
         print("Agregando departamento...")
+        self.mostrar_departamentos()
         # Implementar lógica para agregar departamento
+        with open(r"datos\departamentos.txt", "a", encoding="utf-8") as archivo:
+            nombre = input("Ingrese el nombre del departamento: ")
+            sueldo = input("Ingrese el sueldo del departamento: ")
+            archivo.write(f"{nombre}, {sueldo}\n")
+            limpiar()
+            print(f"Departamento {nombre} agregado con un sueldo de {sueldo}.")
 
     def calcular_sueldo(self):
         print("Calculando sueldo...")
         # Implementar lógica para calcular sueldo
-
-    def mostrar_informacion(self):
-        print("Mostrando información...")
-        # Implementar lógica para mostrar información
+        trabajador = input("Ingrese el nombre del trabajador: ")
+        horas_extra = int(input("Ingrese las horas extra trabajadas: "))
+        tarifa_extra = float(input("Ingrese la tarifa por hora extra: "))
