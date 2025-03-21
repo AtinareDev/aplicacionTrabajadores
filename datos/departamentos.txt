@@ -1,6 +1,2 @@
 ventas, 1000
-logistica, 2000
-pepe, 200
-ventas, 200
-reparaciones, 3000
-rrhh, 3000
+marketing, 2000

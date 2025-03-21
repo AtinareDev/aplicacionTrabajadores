@@ -14,8 +14,8 @@ class Gestion:
             choice = self.menu.get_choice()
             limpiar()
             if choice == 1:
-                
                 print(f"Usted ha seleccionado la opción {choice}.")
+                self.mostrar_departamentos()
                 self.agregar_departamento()
             elif choice == 2:
                 print(f"Usted ha seleccionado la opción {choice}.")
@@ -44,11 +44,24 @@ class Gestion:
         print("Mostrando departamentos...")
         with open(r"datos\departamentos.txt", "r", encoding="utf-8") as archivo:
             contenido = archivo.read()
-            limpiar()
             print(contenido)
 
     def agregar_trabajador(self):
         print("Agregando trabajador...")
+
+        # Verificar si hay departamentos en el archivo departamentos.txt
+        try:
+            with open(r"datos\departamentos.txt", "r", encoding="utf-8") as archivo_departamentos:
+                contenido = archivo_departamentos.read().strip()
+                if not contenido:  # Si el archivo está vacío
+                    limpiar()
+                    print("No se pueden agregar trabajadores porque no hay departamentos disponibles.")
+                    return  # No permitir agregar trabajador
+        except FileNotFoundError:
+            # Si el archivo no existe, notificar que no se puede agregar trabajador
+            limpiar()
+            print("No se puede agregar trabajador porque el archivo de departamentos no existe.")
+            return  # No permitir agregar trabajador
 
         # Obtener datos del trabajador
         nombre = input("Ingrese el nombre del trabajador: ")
@@ -80,10 +93,10 @@ class Gestion:
             limpiar()
             print(
                 f"No se encontró el departamento {departamento}. Por favor, verifica el nombre del departamento.")
+        
 
     def agregar_departamento(self):
         print("Agregando departamento...")
-        self.mostrar_departamentos()
         # Implementar lógica para agregar departamento
         with open(r"datos\departamentos.txt", "a", encoding="utf-8") as archivo:
             nombre = input("Ingrese el nombre del departamento: ")
@@ -94,7 +107,58 @@ class Gestion:
 
     def calcular_sueldo(self):
         print("Calculando sueldo...")
-        # Implementar lógica para calcular sueldo
-        trabajador = input("Ingrese el nombre del trabajador: ")
+
+        # Solicitar al usuario el nombre y apellido del trabajador
+        nombre_trabajador = input("Ingrese el nombre del trabajador: ")
+        apellido_trabajador = input("Ingrese el apellido del trabajador: ")
+
+        # Solicitar las horas extras y la tarifa extra
         horas_extra = int(input("Ingrese las horas extra trabajadas: "))
         tarifa_extra = float(input("Ingrese la tarifa por hora extra: "))
+
+        # Leer el archivo de trabajadores
+        trabajadores_actualizados = []
+        trabajador_encontrado = False
+
+        with open(r"datos\trabajadores.txt", "r", encoding="utf-8") as archivo:
+            for linea in archivo:
+                # Obtener el nombre completo del trabajador, su edad, departamento y sueldo
+                partes = linea.strip().split(" - Sueldo: ")
+                if len(partes) == 2:
+                    trabajador_str = partes[0]
+                    sueldo_str = partes[1]
+
+                    # Extraer el nombre y apellido del trabajador
+                    trabajador_partes = trabajador_str.split(" (")
+                    nombre_apellido = trabajador_partes[0]
+
+                    # Verificar si el trabajador es el que buscamos
+                    nombre, apellido = nombre_apellido.split()
+                    if nombre.lower() == nombre_trabajador.lower() and apellido.lower() == apellido_trabajador.lower():
+                        trabajador_encontrado = True
+
+                        # Calcular el nuevo sueldo
+                        sueldo_base = float(sueldo_str.strip())
+                        nuevo_sueldo = sueldo_base + \
+                            (horas_extra * tarifa_extra)
+
+                        # Actualizar la línea del trabajador con el nuevo sueldo
+                        trabajadores_actualizados.append(
+                            f"{nombre_apellido} ({trabajador_partes[1]} - Sueldo: {nuevo_sueldo:.2f}\n")
+                    else:
+                        # Si no es el trabajador que buscamos, mantener la línea original
+                        trabajadores_actualizados.append(linea)
+                else:
+                    trabajadores_actualizados.append(linea)
+
+        if trabajador_encontrado:
+            # Si encontramos el trabajador, escribir el archivo con el sueldo actualizado
+            with open(r"datos\trabajadores.txt", "w", encoding="utf-8") as archivo:
+                archivo.writelines(trabajadores_actualizados)
+            limpiar()
+            print(
+                f"El sueldo del trabajador {nombre_trabajador} {apellido_trabajador} ha sido actualizado correctamente.")
+        else:
+            limpiar()
+            print(
+                f"No se encontró al trabajador {nombre_trabajador} {apellido_trabajador}.")

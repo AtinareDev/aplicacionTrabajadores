@@ -5,7 +5,7 @@ class Menu:
             2: "Opción 2: Agregar trabajador",
             3: "Opción 3: Mostrar departamentos",
             4: "Opción 4: Mostrar trabajadores",
-            5: "Opción 5: Calcular sueldo",
+            5: "Opción 5: Añadir horas extras",
             6: "Opción 6: Salir"
         }
 
